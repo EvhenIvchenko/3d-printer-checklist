@@ -1,0 +1,37 @@
+.App {
+  text-align: center;
+}
+
+
+
+.accordion__container {
+  width: 1200px;
+  margin: 0 auto;
+}
+
+body {
+  background-color: rgb(169, 167, 167);
+}
+
+
+.das {
+  width: 190px;
+  height: 200px;
+  background-color: green;
+}
+
+
+.MuiFormControlLabel-label  {
+  font-size: 24px !important;
+}
+
+.title {
+  display: block;
+  width: 600px;
+
+  margin: 60px auto;
+}
+
+.text {
+  font-size: 30px !important;
+}
