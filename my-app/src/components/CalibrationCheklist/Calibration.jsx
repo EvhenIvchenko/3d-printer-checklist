@@ -5,22 +5,28 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { green } from '@mui/material/colors';
 
 function CalibrationTask({ task, videoLinks, checked, onChange, taskName, description ,  children }) {
-  // Stop event propagation for both checkbox and label to prevent accordion toggle
+
   const handleControlClick = (event) => {
-    event.stopPropagation(); // Prevent accordion toggle
+    event.stopPropagation(); 
   };
 
   const handleCheckboxChange = (event) => {
-    event.stopPropagation(); // Prevent accordion toggle
-    // Trigger the change event passed from the parent
+    event.stopPropagation(); 
+
     onChange({ ...event, target: { ...event.target, name: taskName } });
   };
 
   const videoLinkElements = Array.isArray(videoLinks)
   ? videoLinks.map((linkObj, index) => (
-      <Link key={index} href={linkObj.url} target="_blank" rel="noopener noreferrer" className="video-guide-link">
-        {linkObj.text}
-      </Link>
+    <Link
+      key={index}
+      href={linkObj.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="link-custom video-guide-link"
+    >
+      {linkObj.text}
+    </Link>
     ))
   : videoLinks && (
       <Link href={videoLinks} target="_blank" rel="noopener noreferrer" className="video-guide-link">
@@ -32,23 +38,22 @@ function CalibrationTask({ task, videoLinks, checked, onChange, taskName, descri
     <Accordion sx={{ backgroundColor: '#FFB7B7' ,borderRadius: '10px', marginBottom: '5px', fontSize: '0px'}}>
       <AccordionSummary expandIcon={<ExpandMoreIcon />} sx={{  color: '#333', textShadow: '0px 2px 4px rgba(0, 0, 0, 0.5)' }}>
 
-        {/* Add onClick event to stop event propagation */}
         <FormControlLabel
           control={
             <Checkbox
               checked={checked}
-              onChange={handleCheckboxChange} // Apply the change handler
-              onClick={handleControlClick} // Stop propagation for the checkbox click
+              onChange={handleCheckboxChange} 
+              onClick={handleControlClick} 
               name={taskName}
             />
           }
-          label={<Typography>{task}</Typography>} // Typography as a label for checkbox
-          onClick={handleControlClick} // Stop propagation for the label click
+          label={<Typography sx={{ fontSize: '1.3rem' }}>{task}</Typography>} 
+          onClick={handleControlClick} 
           className="accordion-label"
         />
       </AccordionSummary>
-      <AccordionDetails className="accordion-details">
-      <Typography gutterBottom sx={{ fontSize: '1.7rem' }}>
+      <AccordionDetails className="accordion-details" >
+      <Typography gutterBottom sx={{ fontSize: '1.4rem' }}>
           {description}
           {videoLinkElements}
         </Typography >
@@ -66,6 +71,7 @@ export default function CalibrationAccordion() {
     printTemperature: false,
     retractionSettings: false,
     pidTuning: false,
+    flowCalibration: false,
   });
   
 
@@ -104,6 +110,12 @@ export default function CalibrationAccordion() {
       taskName: 'retractionSettings'
     },
     {
+      name: 'Flow calibration',
+      description: 'Adjust the flow rate to ensure the correct amount of filament is extruded during prints.',
+      videoLink: 'https://www.youtube.com/watch?v=HGO9k9d834w',
+      taskName: 'flowCalibration'
+    },
+    {
       name: 'PID Tuning',
       description: 'Perform PID tuning to stabilize the temperature of your hotend and heated bed. This step is optional unless you are experiencing issues.',
       videoLink: 'https://www.youtube.com/watch?v=TNye13Xxb6U',
@@ -115,7 +127,6 @@ export default function CalibrationAccordion() {
     console.log(calibrationStatus)
     const { name, checked } = event.target;
     
-    // Check if the name is "extruderCalibration" and all extruder steps are completed
     if (name === "extruderCalibration" && areAllExtruderStepsCompleted()) {
       setCalibrationStatus({ ...calibrationStatus, [name]: true });
     } else {
@@ -189,29 +200,21 @@ export default function CalibrationAccordion() {
     }
   }, [calibrationStatus, areAllExtruderStepsCompleted]);
 
-  // Function to handle changes in subtask checkboxes
   const handleExtruderStepChange = (event, stepName) => {
-    // Set the individual step state
     const updatedStepsState = {
       ...calibrationStatus,
       [stepName]: event.target.checked,
     };
 
-    // Update the calibrationStatus state with the new step state
     setCalibrationStatus(updatedStepsState);
 
-    // Check if all extruder subtask steps are completed
     const allExtruderStepsCompleted = areAllExtruderStepsCompleted();
 
-    // Update the 'extruderCalibration' flag based on all subtasks
     setCalibrationStatus((prevState) => ({
       ...prevState,
       extruderCalibration: allExtruderStepsCompleted,
     }));
   };
-
-  
-
   
   return (
     <Box sx={{ maxWidth: '1200px', margin: 'auto'}}>
@@ -227,12 +230,12 @@ export default function CalibrationAccordion() {
         </AccordionSummary>
         <AccordionDetails sx={{ flexDirection: 'column' }}>
         {calibrationSteps.map((task) => {
-  // Ensure videoLinks is always an array of objects
+
   const videoLinksArray = Array.isArray(task.videoLinks)
     ? task.videoLinks
     : [{
         url: task.videoLink,
-        text: 'Watch Video Guide', // Default text if only one link is provided
+        text: 'Watch Video Guide',
       }];
 
   return (
@@ -240,12 +243,11 @@ export default function CalibrationAccordion() {
       key={task.taskName}
       task={task.name}
       taskName={task.taskName}
-      videoLinks={videoLinksArray} // Always pass an array here
+      videoLinks={videoLinksArray}
       checked={calibrationStatus[task.taskName]}
       description={task.description}
       onChange={handleChange}
     >
-      {/* Conditional rendering for extruderCalibration subtasks */}
       {task.taskName === 'extruderCalibration' && (
         <ExtruderCalibrationSubtasks
           steps={extruderCalibrationSteps}

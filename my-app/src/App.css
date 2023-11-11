@@ -13,10 +13,6 @@ body {
   background-color: rgb(169, 167, 167);
 }
 
-
-
-
-
 .MuiFormControlLabel-label  {
   font-size: 24px !important;
 }
@@ -35,4 +31,5 @@ body {
 .video-guide-link {
   display: block !important;
   color: #341E46 !important;
+  margin-top: 30px !important;
 }

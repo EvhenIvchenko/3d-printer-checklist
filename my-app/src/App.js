@@ -1,5 +1,5 @@
 import './App.css';
-import BasicAccordion from './components/Accordion';
+import BasicAccordion from './components/SoftwareChecklistAccordion/SoftwareChecklistAccordion';
 import CalibrationAccordion from './components/CalibrationCheklist/Calibration';
 
 function App() {

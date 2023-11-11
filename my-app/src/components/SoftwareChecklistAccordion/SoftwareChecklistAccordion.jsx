@@ -28,10 +28,10 @@ export default function SoftwareChecklistAccordion() {
     { name: 'printerSettings', label: 'Install Printer Settings extension', link: 'https://marketplace.ultimaker.com/app/cura/plugins/fieldofview/PrinterSettingsPlugin' },
   ];
 
-  // State to control the completion status
+
   const [isComplete, setIsComplete] = useState(false);
 
-  // Effect to determine if all checkboxes are checked
+
   useEffect(() => {
     setIsComplete(Object.values(checked).every(Boolean));
   }, [checked]);
@@ -52,7 +52,7 @@ export default function SoftwareChecklistAccordion() {
           id="panel1a-header"
         >
           <Box sx={{ display: 'flex', alignItems: 'center', width: '100%', justifyContent: 'center' }}>
-            {/* Only display the CheckCircleIcon when all items are complete */}
+
             {isComplete && (
               <CheckCircleIcon sx={{ fontSize: '2rem' ,color: green[500], position: 'absolute', left: 280 }} />
             )}
