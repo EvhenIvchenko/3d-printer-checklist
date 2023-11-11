@@ -14,11 +14,7 @@ body {
 }
 
 
-.das {
-  width: 190px;
-  height: 200px;
-  background-color: green;
-}
+
 
 
 .MuiFormControlLabel-label  {
@@ -34,4 +30,9 @@ body {
 
 .text {
   font-size: 30px !important;
+}
+
+.video-guide-link {
+  display: block !important;
+  color: #341E46 !important;
 }

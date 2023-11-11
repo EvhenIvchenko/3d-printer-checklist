@@ -4,7 +4,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { green } from '@mui/material/colors';
 
-function CalibrationTask({ task, videoLink, checked, onChange, taskName, description ,  children }) {
+function CalibrationTask({ task, videoLinks, checked, onChange, taskName, description ,  children }) {
   // Stop event propagation for both checkbox and label to prevent accordion toggle
   const handleControlClick = (event) => {
     event.stopPropagation(); // Prevent accordion toggle
@@ -15,6 +15,18 @@ function CalibrationTask({ task, videoLink, checked, onChange, taskName, descrip
     // Trigger the change event passed from the parent
     onChange({ ...event, target: { ...event.target, name: taskName } });
   };
+
+  const videoLinkElements = Array.isArray(videoLinks)
+  ? videoLinks.map((linkObj, index) => (
+      <Link key={index} href={linkObj.url} target="_blank" rel="noopener noreferrer" className="video-guide-link">
+        {linkObj.text}
+      </Link>
+    ))
+  : videoLinks && (
+      <Link href={videoLinks} target="_blank" rel="noopener noreferrer" className="video-guide-link">
+        Watch Video Guide
+      </Link>
+    );
 
   return (
     <Accordion sx={{ backgroundColor: '#FFB7B7' ,borderRadius: '10px', marginBottom: '5px', fontSize: '0px'}}>
@@ -38,14 +50,7 @@ function CalibrationTask({ task, videoLink, checked, onChange, taskName, descrip
       <AccordionDetails className="accordion-details">
       <Typography gutterBottom sx={{ fontSize: '1.7rem' }}>
           {description}
-          <Link 
-            sx={{ display: 'block', color: '#141E46', textDecoration: 'none', fontSize: '30px'}}
-            href={videoLink} 
-            target="_blank" 
-            rel="noopener noreferrer" 
-            className="video-guide-link">
-            Watch Video Guide
-          </Link>
+          {videoLinkElements}
         </Typography >
 
       </AccordionDetails>
@@ -62,6 +67,7 @@ export default function CalibrationAccordion() {
     retractionSettings: false,
     pidTuning: false,
   });
+  
 
   const calibrationSteps = [
     {
@@ -85,9 +91,15 @@ export default function CalibrationAccordion() {
     {
       name: 'Retraction Settings',
       description: 'Adjust retraction speed and distance to reduce stringing and oozing during prints.',
-      videoLinks: [
-        'https://www.youtube.com/watch?v=6LjbCIGCmd0',
-        'https://k3d.tech/calibrations/retractions/rct.html?lang=en',
+      videoLinks: [ // Each item is now an object with url and text
+        {
+          url: 'https://www.youtube.com/watch?v=6LjbCIGCmd0',
+          text: 'Retraction Speed Guide',
+        },
+        {
+          url: 'https://k3d.tech/calibrations/retractions/rct.html?lang=en',
+          text: 'Retraction Calibrator - Please use VPN',
+        },
       ],
       taskName: 'retractionSettings'
     },
@@ -214,38 +226,35 @@ export default function CalibrationAccordion() {
           </Box>
         </AccordionSummary>
         <AccordionDetails sx={{ flexDirection: 'column' }}>
-        {calibrationSteps.map(task => {
-          if (task.taskName === 'extruderCalibration') {
-            return (
-              <CalibrationTask
-                task={task.name}
-                taskName={task.taskName}
-                videoLink={task.videoLink}
-                checked={areAllExtruderStepsCompleted()}
-                description={task.description}
-                onChange={handleChange}
-                sx
-              >
-              {/* Render subtasks here */}
-              <ExtruderCalibrationSubtasks
-                steps={extruderCalibrationSteps}
-                onChange={handleExtruderStepChange}
-              />
-            </CalibrationTask>
-            );
-          } else {
-            return (
-              <CalibrationTask
-                task={task.name}
-                taskName={task.taskName}
-                videoLink={task.videoLink}
-                checked={calibrationStatus[task.taskName]}
-                description={task.description}
-                onChange={handleChange}
-              />
-            )
-          }
-        })}
+        {calibrationSteps.map((task) => {
+  // Ensure videoLinks is always an array of objects
+  const videoLinksArray = Array.isArray(task.videoLinks)
+    ? task.videoLinks
+    : [{
+        url: task.videoLink,
+        text: 'Watch Video Guide', // Default text if only one link is provided
+      }];
+
+  return (
+    <CalibrationTask
+      key={task.taskName}
+      task={task.name}
+      taskName={task.taskName}
+      videoLinks={videoLinksArray} // Always pass an array here
+      checked={calibrationStatus[task.taskName]}
+      description={task.description}
+      onChange={handleChange}
+    >
+      {/* Conditional rendering for extruderCalibration subtasks */}
+      {task.taskName === 'extruderCalibration' && (
+        <ExtruderCalibrationSubtasks
+          steps={extruderCalibrationSteps}
+          onChange={handleExtruderStepChange}
+        />
+      )}
+    </CalibrationTask>
+  );
+})}
         </AccordionDetails>
       </Accordion>
     </Box>
