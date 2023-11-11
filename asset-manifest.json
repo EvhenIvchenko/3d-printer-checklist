@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/3d-printer-checklist/static/css/main.b31fa72f.css",
-    "main.js": "/3d-printer-checklist/static/js/main.8e5bec8b.js",
+    "main.css": "/3d-printer-checklist/static/css/main.77b39928.css",
+    "main.js": "/3d-printer-checklist/static/js/main.315296bd.js",
     "static/js/787.d4aba7ab.chunk.js": "/3d-printer-checklist/static/js/787.d4aba7ab.chunk.js",
     "index.html": "/3d-printer-checklist/index.html",
-    "main.b31fa72f.css.map": "/3d-printer-checklist/static/css/main.b31fa72f.css.map",
-    "main.8e5bec8b.js.map": "/3d-printer-checklist/static/js/main.8e5bec8b.js.map",
+    "main.77b39928.css.map": "/3d-printer-checklist/static/css/main.77b39928.css.map",
+    "main.315296bd.js.map": "/3d-printer-checklist/static/js/main.315296bd.js.map",
     "787.d4aba7ab.chunk.js.map": "/3d-printer-checklist/static/js/787.d4aba7ab.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.b31fa72f.css",
-    "static/js/main.8e5bec8b.js"
+    "static/css/main.77b39928.css",
+    "static/js/main.315296bd.js"
   ]
 }
