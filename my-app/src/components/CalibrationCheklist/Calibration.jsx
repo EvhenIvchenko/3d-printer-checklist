@@ -124,14 +124,12 @@ export default function CalibrationAccordion() {
   ];
 
   const handleChange = (event) => {
-    console.log(calibrationStatus)
-    const { name, checked } = event.target;
-    
-    if (name === "extruderCalibration" && areAllExtruderStepsCompleted()) {
-      setCalibrationStatus({ ...calibrationStatus, [name]: true });
-    } else {
-      setCalibrationStatus({ ...calibrationStatus, [name]: checked });
+    const { name } = event.target;
+    if (name === 'extruderCalibration') {
+      return;
     }
+    setCalibrationStatus({ ...calibrationStatus, [name]: true });
+
   };
   
   const allCompleted = Object.values(calibrationStatus).every(Boolean);
@@ -215,7 +213,7 @@ export default function CalibrationAccordion() {
       extruderCalibration: allExtruderStepsCompleted,
     }));
   };
-  
+
   return (
     <Box sx={{ maxWidth: '1200px', margin: 'auto'}}>
       <Accordion sx={{ backgroundColor: '#FFDBAA' }}>
